@@ -1,11 +1,17 @@
 const express = require("express"),
-    app = express();
-port = 3000;
+    app = express(),
+    mongoose = require('mongoose'),
+    port = 3000;
+
+
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+    .then(() => console.log('Connected To Mongo Server'))
+    .catch(err => console.log({ err }));
 
 
 app.get('/', (req, res) => {
     console.log({ app })
-    res.send({ greeting: 'Hello World!!' })
+    res.json({ greeting: 'Hello World!!' })
 });
 
 app.listen(port, () => {
