@@ -25,16 +25,22 @@ const TodoSchema = new Schema({
 const Todo = model('todo', TodoSchema);
 
 app.get('/', async (req, res) => {
-    const todos = await Todo.find({})
-    console.log({ todos });
+    const todos = await Todo.find({});
     res.json({ greeting: 'Hello World!!', todos })
 });
 
 app.post('/todo', async (req, res) => {
     const { message } = req.body;
     const newTodo = await Todo.create({ title: message, completed: false });
-    console.log({ newTodo });
-    res.json({ message: true });
+    res.json(newTodo);
+});
+
+app.put('/todo/:id', async (req, res) => {
+    const { id } = req.params;
+    const todo = await Todo.findById(id);
+    todo.completed = !todo.completed
+    await todo.save()
+    res.json(todo);
 });
 
 app.listen(port, () => {
